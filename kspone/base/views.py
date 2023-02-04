@@ -9,6 +9,8 @@ from io import BytesIO
 from xhtml2pdf import pisa
 from django.views import View
 from .pdf import html2pdf
+from django.db import connection, reset_queries
+import psycopg2
 # Create your views here.
 def loginpage(request):
     if request.user.is_authenticated:
@@ -49,5 +51,30 @@ def userguide(request):
 def pdf(request):
      pdf = html2pdf("pdf.html")
      return HttpResponse(pdf, content_type="application/pdf")
-     
+
+def state(request):
+    # conn = psycopg2.connect(
+    # host="kspone.postgres.database.azure.com",
+    # database="police",
+    # user="mykspadmin",
+    # password="PoliceHackathon123",
+    # port="5432"
+    #     )
+    # cur = conn.cursor()
+    # cur.execute("SELECT person_name FROM icjs WHERE state = 'Karnataka'")
+    # results = cur.fetchall()
+    content = {'results': results}
+    return render(request, 'search.html', content)
+
+    #     state = request.POST.get("state")
+    #     print(state)
+    #
+    #     if state:
+    #         with connection.cursor() as cursor:
+    #             cursor.execute("SELECT person_name FROM icjs WHERE state = 'Karnataka'")
+    #             results = cursor.fetchall()
+    #             print(results)
+    #         return render(request, "search.html", {"results": results})
+    # return render(request, "search.html")
+
 

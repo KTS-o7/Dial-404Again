@@ -10,6 +10,5 @@ urlpatterns =[
     path('fingerprint/', views.fingerprint, name="fingerprint"),
     path('userguide/', views.userguide, name="userguide"),
     path("logout/", views.logoutuser, name = "logout"),
-    path('pdf/', views.pdf, name="pdf")
-
+    path('pdf/', views.pdf, name="pdf"),
 ]
