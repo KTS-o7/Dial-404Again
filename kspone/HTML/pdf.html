@@ -1,50 +1,18 @@
-<!DOCTYPE html>
-<html>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Search report</title>
+</head>
 <body>
     <div class="container mt-5">
-        <h1>Filter Search</h1>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="search">Search:</label>
-                <input type="text" class="form-control" id="search" name="search">
-            </div>
-            <div class="form-group">
-                <label for="filter" class="d-block m-3">Filter By:</label>
-                <div class="container mx-3 justify-content-between d-flex">
-                    <div class="form-check d-inline-block">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Age
-                        </label>
-                    </div>
-                    <div class="form-check d-inline-block">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Crime Status
-                        </label>
-                    </div>
-                    <div class="form-check d-inline-block">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            CrimeId
-                        </label>
-                    </div>
-                    <div class="form-check d-inline-block">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            City
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+
+      
        
         <section class="container m-4 d-block">
             <div class="container mt-5">
-                <h1>Scrollable Table</h1>
+                <h1>Search results</h1>
                 <div class="table-responsive" id="table">
                   <table class="table table-bordered">
                     <thead>
@@ -115,7 +83,10 @@
         
         
     </div>
-    <a class="btn btn-info" href="{% url 'pdf_view' %}" target="_blank">View Invoice</a>
+    <style>
+      body{
+        font-size: larger;
+      }
+    </style>
 </body>
-
 </html>
