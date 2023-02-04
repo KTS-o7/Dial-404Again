@@ -2,6 +2,7 @@ body {
   margin: 0;
   line-height: normal;
   align-items: center;
+  justify-content: center;
   
 }
 .desktop-1-child {
@@ -111,6 +112,7 @@ body {
   width: 60px;
   height: 26px;
 }
+
 .help:hover {
   color: rgba(43, 99, 240, 0.67);
 }
