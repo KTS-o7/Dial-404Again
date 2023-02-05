@@ -3,9 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .pdf import html2pdf
-from .models import Ksp
+from .models import Person
 from django.db import connection, reset_queries
 import psycopg2
+from django.shortcuts import render
+import asyncio
+import fuzzywuzzy
+from fuzzywuzzy import fuzz
+import psycopg2
+from .models import Person
+
 # Create your views here.
 def loginpage(request):
     if request.user.is_authenticated:
@@ -43,45 +50,46 @@ def fingerprint(request):
 def userguide(request):
       context = {}
       return render(request, 'userguide.html', context)
+
+
+
+async def fuzzy_name_search(names, query):
+    async def check_name(name):
+        return fuzz.token_sort_ratio(name, query)
+
+    checks = [asyncio.ensure_future(check_name(name)) for name in names]
+    results = await asyncio.gather(*checks)
+
+    return [names[i] for i, score in enumerate(results) if score >= 72]
+
+def search(request):
+    if request.method == 'POST':
+        query = request.POST['query']
+        
+        names = []
+
+        conn = psycopg2.connect(
+                host="kspone.postgres.database.azure.com",
+                database="police",
+                user="mykspadmin",
+                password="PoliceHackathon123",
+                port='5432')
+        curr = conn.cursor()
+        curr.execute("SELECT person_name from icjs union select person_name from ksp where person_name is not null;")
+        names=curr.fetchall()
+       
+        names=[i[0] for i in names]
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        result = loop.run_until_complete(fuzzy_name_search(names, query))
+
+        return render(request, 'search.html', {'result': result})
+
+    return render(request, 'search.html')
+
+
 def pdf(request):
      pdf = html2pdf("pdf.html")
      return HttpResponse(pdf, content_type="application/pdf")
-
-
-def state(request):
-    results = ksp.objects.all()
-    if request.method == 'POST':
-        state = request.POST.get('state')
-        results = Ksp.objects.all()
-        content = {'results': results, 'state': state}
-        return render(request, 'search.html', content)
-
-    content = {'results': results}
-    return render(request, 'search.html', content)
-
-# def state(request):
-    # conn = psycopg2.connect(
-    # host="kspone.postgres.database.azure.com",
-    # database="police",
-    # user="mykspadmin",
-    # password="PoliceHackathon123",
-    # port="5432"
-    #     )
-    # cur = conn.cursor()
-    # cur.execute("SELECT person_name FROM icjs WHERE state = 'Karnataka'")
-    # results = cur.fetchall()
-    # content = {'results': results}
-    # return render(request, 'search.html', content)
-
-    #     state = request.POST.get("state")
-    #     print(state)
-    #
-    #     if state:
-    #         with connection.cursor() as cursor:
-    #             cursor.execute("SELECT person_name FROM icjs WHERE state = 'Karnataka'")
-    #             results = cursor.fetchall()
-    #             print(results)
-    #         return render(request, "search.html", {"results": results})
-    # return render(request, "search.html")
-
-
