@@ -1,14 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import FileResponse
-from django.template.loader import get_template
-from io import BytesIO
-from xhtml2pdf import pisa
-from django.views import View
 from .pdf import html2pdf
+from .models import Ksp
 from django.db import connection, reset_queries
 import psycopg2
 # Create your views here.
@@ -52,7 +47,19 @@ def pdf(request):
      pdf = html2pdf("pdf.html")
      return HttpResponse(pdf, content_type="application/pdf")
 
+
 def state(request):
+    results = ksp.objects.all()
+    if request.method == 'POST':
+        state = request.POST.get('state')
+        results = Ksp.objects.all()
+        content = {'results': results, 'state': state}
+        return render(request, 'search.html', content)
+
+    content = {'results': results}
+    return render(request, 'search.html', content)
+
+# def state(request):
     # conn = psycopg2.connect(
     # host="kspone.postgres.database.azure.com",
     # database="police",
@@ -63,8 +70,8 @@ def state(request):
     # cur = conn.cursor()
     # cur.execute("SELECT person_name FROM icjs WHERE state = 'Karnataka'")
     # results = cur.fetchall()
-    content = {'results': results}
-    return render(request, 'search.html', content)
+    # content = {'results': results}
+    # return render(request, 'search.html', content)
 
     #     state = request.POST.get("state")
     #     print(state)
