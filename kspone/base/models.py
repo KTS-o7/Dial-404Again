@@ -19,11 +19,13 @@ class Ksp(models.Model):
     person_status=models.CharField(max_length=200)
     major_head=models.CharField(max_length=200)
     minor_head=models.CharField(max_length=200)
-    crime_no=models.IntegerField()
-    arr_id=models.IntegerField()
+    crime_no=models.CharField(max_length=20)
+    arr_id = models.PositiveBigIntegerField()
     unit_id=models.IntegerField()
-    fir_id=models.DateField()
+    fir_id=models.PositiveBigIntegerField()
     dedt=models.DateTimeField()
 
+    class Meta:
+        db_table = 'police'
 
 

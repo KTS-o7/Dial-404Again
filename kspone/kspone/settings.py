@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'kspone.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'police',
+        'USER': 'mykspadmin',
+        'PASSWORD': 'PoliceHackathon123',
+        'HOST': 'kspone.postgres.database.azure.com',
+        'PORT': '5432',
     }
 }
 

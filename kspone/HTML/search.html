@@ -122,12 +122,14 @@
                     </thead>
                     <tbody>
                     {% if results %}
-                        {%for i in range(10)%}
+                        {%for result in results)%}
+                        {% if state in result.state %}
                         <tr>
                           <td>result</td>
-                          <td>{{ results[i][0] }}</td>
+                          <td>{{ result }}</td>
                           <td>result</td>
                         </tr>
+                    {%endif%}
                     {%endfor%}
                     {% endif %}
 
